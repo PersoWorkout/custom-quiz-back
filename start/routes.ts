@@ -20,13 +20,22 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.post('/register', 'AuthController.register')
-Route.post('/login', 'AuthController.login')
-Route.get('/me', 'AuthController.me')
+Route.group(() => {
+  Route.post('/register', 'AuthController.register')
+  Route.post('/login', 'AuthController.login')
+  Route.get('/me', 'AuthController.me')
+  Route.post('/logout', 'AuthController.logout')
+}).prefix('/auth')
 
 Route.group(() => {
   Route.get('/', 'QuizzesController.index')
   Route.post('/', 'QuizzesController.store')
   Route.get('/:id', 'QuizzesController.show')
   Route.put('/:id', 'QuizzesController.edit')
+  Route.group(() => {
+    Route.get('/', 'QuestionsController.show')
+    Route.post('/', 'QuestionsController.show')
+    Route.get('/:id', 'QuestionsController.show')
+    Route.put('/:id', 'QuestionsController.show')
+  }).prefix('/:quizId/question')
 }).prefix('/quiz')
