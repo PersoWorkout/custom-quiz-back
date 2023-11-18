@@ -20,7 +20,7 @@ export default class QuizzesController {
   }
 
   public async show({ request, response }: HttpContextContract) {
-    const id = request.input('id')
+    const id = request.param('id')
     const quiz = await Quiz.findByOrFail('id', id)
     return response.json({ data: quiz })
   }

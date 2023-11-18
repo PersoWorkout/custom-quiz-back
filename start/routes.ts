@@ -34,8 +34,8 @@ Route.group(() => {
   Route.put('/:id', 'QuizzesController.edit')
   Route.group(() => {
     Route.get('/', 'QuestionsController.show')
-    Route.post('/', 'QuestionsController.show')
-    Route.get('/:id', 'QuestionsController.show')
-    Route.put('/:id', 'QuestionsController.show')
+    Route.post('/', 'QuestionsController.store')
+    Route.get('/:id', 'QuestionsController.index')
+    Route.put('/:id', 'QuestionsController.edit')
   }).prefix('/:quizId/question')
 }).prefix('/quiz')

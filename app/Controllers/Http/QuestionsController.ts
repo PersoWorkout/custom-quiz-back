@@ -6,8 +6,8 @@ import UpdateQuestaionValidator from 'App/Validators/UpdateQuestaionValidator'
 
 export default class QuestionsController {
   public async show({ request, response }: HttpContextContract) {
-    const quizId = request.input('quizId')
-    const questions = await Question.findByOrFail('quizId', quizId)
+    const quizId = request.param('quizId')
+    const questions = await Question.query().where('quizId', quizId).select()
     return response.json({ data: questions })
   }
 
@@ -23,7 +23,7 @@ export default class QuestionsController {
   }
 
   public async index({ request, response }: HttpContextContract) {
-    const id = request.input('id')
+    const id = request.param('id')
     const question = await Question.findOrFail(id)
     return response.json({ data: question })
   }
