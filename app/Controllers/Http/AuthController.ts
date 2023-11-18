@@ -22,7 +22,7 @@ export default class AuthController {
   public async register({ auth, request, response }: HttpContextContract) {
     const payload = await request.validate(RegisterValidator)
     const user = await User.create({ ...payload })
-    return response.status(201).json(auth.login(user, true))
+    return response.status(201).json(await auth.login(user, true))
   }
 
   public async logout({ auth, response }: HttpContextContract) {

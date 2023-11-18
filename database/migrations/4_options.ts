@@ -7,6 +7,8 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.uuid('id').primary().defaultTo(this.db.rawQuery('uuid_generate_v4()').knexQuery)
       table.string('option')
+      table.boolean('is_correct')
+      table.string('color')
       table.uuid('question_id').unsigned().references('id').inTable('questions').onDelete('CASCADE')
 
       /**

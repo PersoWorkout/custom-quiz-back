@@ -9,6 +9,12 @@ export default class Option extends BaseModel {
   public option: string
 
   @column()
+  public isCorrect: boolean
+
+  @column()
+  public color: string
+
+  @column()
   public questionId: string
 
   @column.dateTime({ autoCreate: true })
