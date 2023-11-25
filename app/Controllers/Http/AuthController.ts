@@ -13,7 +13,7 @@ export default class AuthController {
     const payload = await request.validate(LoginValidator)
     try {
       const token = await auth.use('web').attempt(payload.email, payload.password)
-      return response.status(201).json(token)
+      return response.created(token)
     } catch {
       return response.unauthorized('Invalid credentials')
     }
@@ -22,7 +22,7 @@ export default class AuthController {
   public async register({ auth, request, response }: HttpContextContract) {
     const payload = await request.validate(RegisterValidator)
     const user = await User.create({ ...payload })
-    return response.status(201).json(await auth.login(user, true))
+    return response.created(await auth.login(user, true))
   }
 
   public async logout({ auth, response }: HttpContextContract) {

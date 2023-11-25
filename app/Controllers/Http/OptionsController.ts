@@ -14,7 +14,7 @@ export default class OptionsController {
 
     const questionId = request.param('question-id')
     const options = await Option.query().where('question-id', questionId)
-    return response.json({ data: options })
+    return response.ok({ data: options })
   }
 
   public async store({ request, response, auth }: HttpContextContract) {
@@ -36,7 +36,7 @@ export default class OptionsController {
 
     const payload = await request.validate(CreateOptionValidator)
     const option = await Option.create({ ...payload, questionId })
-    return response.status(201).json({ data: option })
+    return response.created({ data: option })
   }
 
   public async index({ request, response, auth }: HttpContextContract) {
@@ -47,7 +47,7 @@ export default class OptionsController {
 
     const id = request.param('id')
     const option = await Option.findOrFail(id)
-    return response.json({ data: option })
+    return response.ok({ data: option })
   }
 
   public async edit({ request, response, auth }: HttpContextContract) {
@@ -64,17 +64,15 @@ export default class OptionsController {
 
     const id = request.param('id')
     const option = await Option.findOrFail(id)
+
     const payload = await request.validate(UpdateOptionValidator)
+
     await option
       .merge({
         ...payload,
       })
       .save()
-    // option.option = payload.option || option.option
-    // option.color = payload.color || option.color
-    // option.isCorrect = payload.isCorrect || option.isCorrect
-    // option.save()
 
-    return response.json({ data: option })
+    return response.ok({ data: option })
   }
 }

@@ -8,7 +8,7 @@ export default class QuestionsController {
   public async show({ request, response }: HttpContextContract) {
     const quizId = request.param('quiz-id')
     const questions = await Question.query().where('quizId', quizId).select()
-    return response.json({ data: questions })
+    return response.ok({ data: questions })
   }
 
   public async store({ request, response, auth }: HttpContextContract) {
@@ -19,13 +19,13 @@ export default class QuestionsController {
     const quizId = request.param('quiz-id')
     const payload = await request.validate(CreateQuestionValidator)
     const question = await Question.create({ ...payload, quizId: quizId })
-    return response.status(201).json({ data: question })
+    return response.created({ data: question })
   }
 
   public async index({ request, response }: HttpContextContract) {
     const id = request.param('id')
     const question = await Question.findOrFail(id)
-    return response.json({ data: question })
+    return response.ok({ data: question })
   }
 
   public async edit({ request, auth, response }: HttpContextContract) {
@@ -42,10 +42,10 @@ export default class QuestionsController {
 
     const id = request.param('id')
     const question = await Question.findOrFail(id)
+
     const payload = await request.validate(UpdateQuestaionValidator)
-    if (payload.question) {
-      question.question = payload.question
-    }
-    return response.json({ data: { question } })
+
+    await question.merge({ ...payload }).save()
+    return response.ok({ data: { question } })
   }
 }
