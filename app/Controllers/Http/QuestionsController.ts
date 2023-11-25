@@ -6,7 +6,7 @@ import UpdateQuestaionValidator from 'App/Validators/UpdateQuestaionValidator'
 
 export default class QuestionsController {
   public async show({ request, response }: HttpContextContract) {
-    const quizId = request.param('quizId')
+    const quizId = request.param('quiz-id')
     const questions = await Question.query().where('quizId', quizId).select()
     return response.json({ data: questions })
   }
@@ -16,7 +16,7 @@ export default class QuestionsController {
     if (!auth.user) {
       throw new Error('You are not logged')
     }
-    const quizId = request.param('quizId')
+    const quizId = request.param('quiz-id')
     const payload = await request.validate(CreateQuestionValidator)
     const question = await Question.create({ ...payload, quizId: quizId })
     return response.status(201).json({ data: question })
@@ -34,7 +34,7 @@ export default class QuestionsController {
       throw new Error('You are not logged')
     }
 
-    const quizId = request.param('quizId')
+    const quizId = request.param('quiz-id')
     const quiz = await Quiz.findOrFail(quizId)
     if (quiz.userId !== auth.user.id) {
       throw new Error('You are not allowed')

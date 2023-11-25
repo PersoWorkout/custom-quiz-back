@@ -27,15 +27,26 @@ Route.group(() => {
   Route.post('/logout', 'AuthController.logout')
 }).prefix('/auth')
 
+//Quiz Management
 Route.group(() => {
   Route.get('/', 'QuizzesController.index')
   Route.post('/', 'QuizzesController.store')
   Route.get('/:id', 'QuizzesController.show')
   Route.put('/:id', 'QuizzesController.edit')
-  Route.group(() => {
-    Route.get('/', 'QuestionsController.show')
-    Route.post('/', 'QuestionsController.store')
-    Route.get('/:id', 'QuestionsController.index')
-    Route.put('/:id', 'QuestionsController.edit')
-  }).prefix('/:quizId/question')
-}).prefix('/quiz')
+}).prefix('quiz')
+
+//Question Management
+Route.group(() => {
+  Route.get('/', 'QuestionsController.show')
+  Route.post('/', 'QuestionsController.store')
+  Route.get('/:id', 'QuestionsController.index')
+  Route.put('/:id', 'QuestionsController.edit')
+}).prefix('quiz/:quiz-id/question/')
+
+//Option Management
+Route.group(() => {
+  Route.get('/', 'OptionsController.show')
+  Route.post('/', 'OptionsController.store')
+  Route.get('/:id', 'OptionsController.index')
+  Route.put('/:id', 'OptionsController.edit')
+}).prefix('quiz/:quiz-id/question/:question-id/option')

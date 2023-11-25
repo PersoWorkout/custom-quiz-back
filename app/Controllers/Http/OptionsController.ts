@@ -12,8 +12,8 @@ export default class OptionsController {
       throw new Error('You are not logged')
     }
 
-    const questionId = request.param('questionId')
-    const options = await Option.query().where('questionId', questionId)
+    const questionId = request.param('question-id')
+    const options = await Option.query().where('question-id', questionId)
     return response.json({ data: options })
   }
 
@@ -23,13 +23,13 @@ export default class OptionsController {
       throw new Error('You are not logged')
     }
 
-    const quizId: string = request.param('quizId')
+    const quizId: string = request.param('quiz-id')
     const quiz = await Quiz.findOrFail(quizId)
     if (quiz.userId !== auth.user.id) {
       throw new Error('You are not allowed')
     }
 
-    const questionId = request.param('questionId')
+    const questionId = request.param('question-id')
     if (!(await Question.findOrFail(questionId))) {
       throw new Error('Question not found')
     }
@@ -56,7 +56,7 @@ export default class OptionsController {
       throw new Error('You are not logged')
     }
 
-    const quizId = request.param('quizId')
+    const quizId = request.param('quiz-id')
     const quiz = await Quiz.findOrFail(quizId)
     if (quiz.userId !== auth.user.id) {
       throw new Error('You are not allowed')
@@ -65,10 +65,15 @@ export default class OptionsController {
     const id = request.param('id')
     const option = await Option.findOrFail(id)
     const payload = await request.validate(UpdateOptionValidator)
-    option.option = payload.option || option.option
-    option.color = payload.color || option.color
-    option.isCorrect = payload.isCorrect || option.isCorrect
-    option.save()
+    await option
+      .merge({
+        ...payload,
+      })
+      .save()
+    // option.option = payload.option || option.option
+    // option.color = payload.color || option.color
+    // option.isCorrect = payload.isCorrect || option.isCorrect
+    // option.save()
 
     return response.json({ data: option })
   }
